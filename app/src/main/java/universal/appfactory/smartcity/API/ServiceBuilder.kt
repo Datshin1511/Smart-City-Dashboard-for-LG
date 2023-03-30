@@ -17,26 +17,21 @@ object ServiceBuilder {
         .writeTimeout(60, TimeUnit.SECONDS).build()
 
     private val retrofitURL1 = Retrofit.Builder()
-        .baseUrl(SERVER_URL_1) // change this IP for testing by your actual machine IP
+        .baseUrl(SERVER_URL_1)
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()
 
     private val retrofitURL2 = Retrofit.Builder()
-        .baseUrl(SERVER_URL_2) // change this IP for testing by your actual machine IP
+        .baseUrl(SERVER_URL_2)
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()
 
-
     fun<T> buildServiceURL1(service: Class<T>): T{
         return retrofitURL1.create(service)
     }
-
     fun<T> buildServiceURL2(service: Class<T>): T{
         return retrofitURL2.create(service)
     }
-
-
-
 }

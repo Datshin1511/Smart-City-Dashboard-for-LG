@@ -9,7 +9,7 @@ interface ApiInterface {
 
 //    SERVER_URL_1
     @GET("v1")
-    fun getServices(@Query("search") search: String, @Query("categories") categories: String, @Query("maxResults") maxResults: Int): Call<ServicesModel>?
+    fun getServices(@Query("selection") search: String, @Query("categories") categories: String, @Query("maxResults") maxResults: Int): Call<ServicesModel>?
 
     @GET("v1/events")
     fun getEvents(): Call<EventsModel>?
@@ -26,11 +26,11 @@ interface ApiInterface {
     @GET("v1/tpl/bus-routes")
     fun getSpecificBusRoutes(@Query("busStopName") busStopName: String): Call<SpecificBusRoutesModel>?
 
+    @GET("v1/tpl/")
+    fun getBusRoutes(@Query("selection") selection: String = "43.7755;11.2495", @Query("maxResults") maxResults: Int = 5): Call<BusRoutesModel>?
+
 //    @GET("v1/tpl/bus-stops")
 //    fun getBusStops(@Query("route") route: String, @Query("geometry") geometry: Boolean = true): Call<BusStopsModel>?
-
-//    @GET("v1/tpl/")
-//    fun getBusRoutes(@Query("selection") selection: String): Call<BusRoutesModel>?
 
 //    @GET("v1/tpl/bus-position")
 //    fun getBusPosition(@Query("agency") selection: String): Call<BusPositionModel>?
