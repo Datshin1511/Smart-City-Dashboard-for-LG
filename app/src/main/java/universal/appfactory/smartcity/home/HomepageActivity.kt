@@ -454,7 +454,4 @@ class HomepageActivity : AppCompatActivity() {
         startActivity(navigableIntent)
     }
 
-    // Map
-
-
 }

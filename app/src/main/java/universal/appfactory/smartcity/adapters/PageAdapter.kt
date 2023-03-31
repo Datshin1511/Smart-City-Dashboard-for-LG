@@ -2,14 +2,10 @@
 
 package universal.appfactory.smartcity.adapters
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import universal.appfactory.smartcity.home.HomepageActivity
-import universal.appfactory.smartcity.home.MapsActivity
 
 class PageAdapter(fm: FragmentManager, pageCount: Int=3): FragmentPagerAdapter(fm) {
     private val pages: Int = pageCount
@@ -32,19 +28,19 @@ class PageAdapter(fm: FragmentManager, pageCount: Int=3): FragmentPagerAdapter(f
         val fragment: Fragment = when(position){
             0 -> {
                 bundle.putInt("pageNo", 1)
-                GridLayoutFragment1()
+                LayoutFragment1()
             }
             1 -> {
                 bundle.putInt("pageNo", 2)
-                GridLayoutFragment2()
+                LayoutFragment2()
             }
             2 -> {
                 bundle.putInt("pageNo", 3)
-                GridLayoutFragment3()
+                LayoutFragment3()
             }
             else -> {
                 bundle.putInt("pageNo", 1)
-                GridLayoutFragment1()
+                LayoutFragment1()
             }
         }
 

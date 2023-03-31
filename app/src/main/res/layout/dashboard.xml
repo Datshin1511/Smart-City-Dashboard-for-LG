@@ -35,7 +35,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rectangle_background"
+            android:background="#6BFFFFFF"
             android:orientation="horizontal">
 
             <ImageView
@@ -55,20 +55,21 @@
                 android:hint="Search for any city"
                 android:padding="10dp"
                 android:paddingStart="10dp"
-                android:textColorHint="@color/black"
+                android:textColor="@color/white"
+                android:textColorHint="@color/grey"
                 android:textSize="15sp"
                 android:textStyle="italic"
                 tools:ignore="TouchTargetSizeCheck" />
+
         </LinearLayout>
 
         <GridLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_margin="10dp"
-            android:columnCount="3"
-            android:padding="10dp"
-            android:rowCount="3"
+            android:columnCount="4"
+            android:rowCount="2"
 
             app:alignmentMode="alignBounds"
             app:useDefaultMargins="true"
@@ -79,18 +80,23 @@
                 android:layout_height="match_parent"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1">
+
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginHorizontal="5dp"
-                    android:backgroundTint="?android:textColorPrimary"
+                    android:layout_rowWeight="1"
                     android:onClick="smartTask"
                     android:tag="1"
                     android:text="services"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:textAllCaps="true" />
+                    android:textStyle="bold|normal"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textAllCaps="true"
+                    android:background="@android:color/transparent"
+                    app:iconTint="#000000" />
             </LinearLayout>
 
             <LinearLayout
@@ -101,9 +107,12 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginHorizontal="5dp"
-                    android:backgroundTint="?android:textColorPrimary"
+                    android:textStyle="bold|normal"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:background="@android:color/transparent"
                     android:onClick="smartTask"
                     android:tag="2"
                     android:text="Events"
@@ -120,9 +129,12 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginHorizontal="5dp"
-                    android:backgroundTint="?android:textColorPrimary"
+                    android:textStyle="bold|normal"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:background="@android:color/transparent"
                     android:onClick="smartTask"
                     android:tag="3"
                     android:text="Locations"
@@ -139,9 +151,12 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginHorizontal="5dp"
-                    android:backgroundTint="?android:textColorPrimary"
+                    android:textStyle="bold|normal"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:background="@android:color/transparent"
                     android:onClick="smartTask"
                     android:tag="4"
                     android:text="Transport\nagencies"
@@ -158,9 +173,12 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginHorizontal="5dp"
-                    android:backgroundTint="?android:textColorPrimary"
+                    android:textStyle="bold|normal"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:background="@android:color/transparent"
                     android:onClick="smartTask"
                     android:tag="5"
                     android:text="Shortest\nway"
@@ -177,9 +195,12 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginHorizontal="5dp"
-                    android:backgroundTint="?android:textColorPrimary"
+                    android:textStyle="bold|normal"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:background="@android:color/transparent"
                     android:onClick="smartTask"
                     android:tag="6"
                     android:text="Bus Lines"
@@ -197,9 +218,12 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginHorizontal="5dp"
-                    android:backgroundTint="?android:textColorPrimary"
+                    android:textStyle="bold|normal"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:background="@android:color/transparent"
                     android:onClick="smartTask"
                     android:tag="7"
                     android:text="Bus Lines\n(Specific)"
@@ -217,9 +241,12 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginHorizontal="10dp"
-                    android:backgroundTint="?android:textColorPrimary"
+                    android:textStyle="bold|normal"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:background="@android:color/transparent"
                     android:onClick="smartTask"
                     android:tag="8"
                     android:text="Bus Routes"

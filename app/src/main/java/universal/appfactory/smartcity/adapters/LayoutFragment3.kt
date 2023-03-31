@@ -14,10 +14,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [GridLayoutFragment2.newInstance] factory method to
+ * Use the [LayoutFragment3.newInstance] factory method to
  * create an instance of this fragment.
  */
-class GridLayoutFragment2 : Fragment() {
+class LayoutFragment3 : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -28,6 +28,8 @@ class GridLayoutFragment2 : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+
     }
 
     override fun onCreateView(
@@ -35,7 +37,7 @@ class GridLayoutFragment2 : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_maps, container, false)
+        return inflater.inflate(R.layout.fragment_grid_layout3, container, false)
     }
 
     companion object {
@@ -45,12 +47,12 @@ class GridLayoutFragment2 : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment GridLayoutFragment2.
+         * @return A new instance of fragment LayoutFragment3.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            GridLayoutFragment2().apply {
+            LayoutFragment3().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
