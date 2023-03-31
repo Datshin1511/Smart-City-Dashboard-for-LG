@@ -30,4 +30,12 @@
         android:onClick="menu"
         app:showAsAction="ifRoom"/>
 
+    <item
+        android:id="@+id/voice"
+        android:titleCondensed="Voice"
+        android:title="@string/voice"
+        android:onClick="menu"
+        android:icon="@mipmap/speech_mic_night"
+        app:showAsAction="always"/>
+
 </menu>

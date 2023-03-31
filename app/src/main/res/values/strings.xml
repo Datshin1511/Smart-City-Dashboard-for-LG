@@ -2,6 +2,7 @@
     <string name="app_name">Smart City LG dashboard</string>
     <string name="menu_settings">Connection manager</string>
     <string name="about">Credits</string>
+    <string name="voice">Voice</string>
     <string name="master_username">Master username</string>
     <string name="ip_address">Master IP address</string>
     <string name="port">Port</string>

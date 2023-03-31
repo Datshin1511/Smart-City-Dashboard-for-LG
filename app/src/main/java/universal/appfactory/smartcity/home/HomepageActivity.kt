@@ -3,6 +3,7 @@ package universal.appfactory.smartcity.home
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -10,6 +11,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
@@ -427,6 +429,26 @@ class HomepageActivity : AppCompatActivity() {
             else -> { Log.i("Smart Task", "No API response")}
         }
     }
+
+    private val speechRecognitionLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val data = result.data
+                val taskText = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS) as ArrayList<String>
+                Log.i("Speech processed", taskText[0])
+            }
+        }
+    private fun speechRecognition(){
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        intent.putExtra(
+            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+        )
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now")
+        speechRecognitionLauncher.launch(intent)
+
+    }
+
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if(backpress + 2000 > System.currentTimeMillis())
@@ -451,7 +473,10 @@ class HomepageActivity : AppCompatActivity() {
             else -> Intent(this@HomepageActivity, OldHomepageActivity::class.java)
         }
 
-        startActivity(navigableIntent)
+        if(item.titleCondensed == "Voice")
+            speechRecognition()
+        else
+            startActivity(navigableIntent)
     }
 
 }
