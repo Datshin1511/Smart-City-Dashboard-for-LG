@@ -2,11 +2,14 @@
 
 package universal.appfactory.smartcity.adapters
 
+import android.content.Intent
+import android.os.Bundle
+import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import universal.appfactory.aeroindia2023.GridLayoutFragment2
-import universal.appfactory.aeroindia2023.GridLayoutFragment3
+import universal.appfactory.smartcity.home.HomepageActivity
+import universal.appfactory.smartcity.home.MapsActivity
 
 class PageAdapter(fm: FragmentManager, pageCount: Int=3): FragmentPagerAdapter(fm) {
     private val pages: Int = pageCount
@@ -25,12 +28,28 @@ class PageAdapter(fm: FragmentManager, pageCount: Int=3): FragmentPagerAdapter(f
     }
 
     override fun getItem(position: Int): Fragment {
-        return when(position){
-            0 -> GridLayoutFragment1()
-            1 -> GridLayoutFragment2()
-            2 -> GridLayoutFragment3()
-            else -> GridLayoutFragment1()
+        val bundle = Bundle()
+        val fragment: Fragment = when(position){
+            0 -> {
+                bundle.putInt("pageNo", 1)
+                GridLayoutFragment1()
+            }
+            1 -> {
+                bundle.putInt("pageNo", 2)
+                GridLayoutFragment2()
+            }
+            2 -> {
+                bundle.putInt("pageNo", 3)
+                GridLayoutFragment3()
+            }
+            else -> {
+                bundle.putInt("pageNo", 1)
+                GridLayoutFragment1()
+            }
         }
+
+        fragment.arguments = bundle
+        return fragment
     }
 
 }

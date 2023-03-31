@@ -35,7 +35,7 @@ class GridLayoutFragment1 : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_homepage, container, false)
+        return inflater.inflate(R.layout.dashboard, container, false)
     }
 
     companion object {

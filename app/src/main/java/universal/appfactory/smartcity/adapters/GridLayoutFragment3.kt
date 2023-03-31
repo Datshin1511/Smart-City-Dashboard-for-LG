@@ -1,4 +1,4 @@
-package universal.appfactory.aeroindia2023
+package universal.appfactory.smartcity.adapters
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

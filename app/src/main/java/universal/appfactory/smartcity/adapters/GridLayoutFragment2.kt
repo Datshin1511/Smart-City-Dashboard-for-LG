@@ -1,4 +1,4 @@
-package universal.appfactory.aeroindia2023
+package universal.appfactory.smartcity.adapters
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -35,7 +35,7 @@ class GridLayoutFragment2 : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_grid_layout2, container, false)
+        return inflater.inflate(R.layout.activity_maps, container, false)
     }
 
     companion object {
