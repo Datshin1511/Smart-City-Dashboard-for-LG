@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.OldHomepageActivity">
+    tools:context=".home.HomepageActivity">
 
     <ProgressBar
         android:id="@+id/progressbar"
@@ -36,7 +36,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#6BFFFFFF"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:cornerRadius="30dp">
 
             <ImageView
                 android:id="@+id/search"
@@ -48,7 +49,7 @@
 
             <EditText
                 android:id="@+id/city"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="5dp"
@@ -57,9 +58,28 @@
                 android:paddingStart="10dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/grey"
+                android:background="@android:color/transparent"
                 android:textSize="15sp"
                 android:textStyle="italic"
                 tools:ignore="TouchTargetSizeCheck" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="3sp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/visualizeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Visualize"
+                android:layout_marginEnd="10dp"
+                android:paddingHorizontal="30dp"
+                android:textColor="@color/white"
+                android:onClick="visualize"
+                android:backgroundTint="@color/red"
+                app:cornerRadius="50sp"/>
 
         </LinearLayout>
 
@@ -93,7 +113,7 @@
                     android:text="services"
                     android:textStyle="bold|normal"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textAllCaps="true"
                     android:background="@android:color/transparent"
                     app:iconTint="#000000" />
@@ -111,7 +131,7 @@
                     android:layout_marginHorizontal="5dp"
                     android:textStyle="bold|normal"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:background="@android:color/transparent"
                     android:onClick="smartTask"
                     android:tag="2"
@@ -133,7 +153,7 @@
                     android:layout_marginHorizontal="5dp"
                     android:textStyle="bold|normal"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:background="@android:color/transparent"
                     android:onClick="smartTask"
                     android:tag="3"
@@ -155,7 +175,7 @@
                     android:layout_marginHorizontal="5dp"
                     android:textStyle="bold|normal"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:background="@android:color/transparent"
                     android:onClick="smartTask"
                     android:tag="4"
@@ -177,7 +197,7 @@
                     android:layout_marginHorizontal="5dp"
                     android:textStyle="bold|normal"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:background="@android:color/transparent"
                     android:onClick="smartTask"
                     android:tag="5"
@@ -199,7 +219,7 @@
                     android:layout_marginHorizontal="5dp"
                     android:textStyle="bold|normal"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:background="@android:color/transparent"
                     android:onClick="smartTask"
                     android:tag="6"
@@ -221,7 +241,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginHorizontal="5dp"
                     android:textStyle="bold|normal"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textColor="@color/white"
                     android:background="@android:color/transparent"
                     android:onClick="smartTask"
@@ -245,7 +265,7 @@
                     android:layout_marginHorizontal="10dp"
                     android:textStyle="bold|normal"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:background="@android:color/transparent"
                     android:onClick="smartTask"
                     android:tag="8"

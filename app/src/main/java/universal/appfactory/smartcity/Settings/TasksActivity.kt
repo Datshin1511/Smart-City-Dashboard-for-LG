@@ -197,7 +197,35 @@ class TasksActivity : AppCompatActivity() {
             }
 
             "5" -> {
-                val message = "Success"
+                var message = "Success"
+                try{
+                    val session = setSession()
+                    session.connect()
+
+                    val blank = """<?xml version="1.0" encoding="UTF-8"?>
+                                    <kml xmlns="http://www.opengis.net/kml/2.2" 
+                                    xmlns:gx="http://www.google.com/kml/ext/2.2" 
+                                    xmlns:kml="http://www.opengis.net/kml/2.2" 
+                                    xmlns:atom="http://www.w3.org/2005/Atom">
+                                    <Document>
+                                    </Document>
+                                    </kml>"""
+                    val channel = session.openChannel("exec")
+
+                    val command = """echo '$blank' > /var/www/html/kml/slave_$machineCount.kml"""
+                    (channel as ChannelExec).setCommand(command)
+                    channel.connect()
+
+                    // Disconnection from the rigs
+                    channel.disconnect()
+                    session.connect()
+
+                }
+                catch(e: Exception){
+                    message = "Failure"
+                    e.printStackTrace()
+                }
+
                 return message
             }
 
@@ -208,7 +236,10 @@ class TasksActivity : AppCompatActivity() {
                     session.connect()
 
                     val blank = """<?xml version="1.0" encoding="UTF-8"?>
-                                    <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+                                    <kml xmlns="http://www.opengis.net/kml/2.2" 
+                                    xmlns:gx="http://www.google.com/kml/ext/2.2" 
+                                    xmlns:kml="http://www.opengis.net/kml/2.2" 
+                                    xmlns:atom="http://www.w3.org/2005/Atom">
                                     <Document>
                                     </Document>
                                     </kml>"""

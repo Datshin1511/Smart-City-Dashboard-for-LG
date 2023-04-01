@@ -6,19 +6,22 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBar
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.data.kml.KmlLayer
 import universal.appfactory.smartcity.R
 import universal.appfactory.smartcity.Settings.CreditsActivity
 import universal.appfactory.smartcity.Settings.HelpActivity
 import universal.appfactory.smartcity.Settings.SettingsActivity
 import universal.appfactory.smartcity.Settings.TasksActivity
 import universal.appfactory.smartcity.databinding.ActivityMapsBinding
+import java.io.ByteArrayInputStream
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -55,11 +58,51 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker in Sydney and move the camera
-        val location = LatLng(25.2623, 82.9893)
-        val zoomFactor = 14.0F
-        mMap.addMarker(MarkerOptions().position(location).title("Marker in Varanasi, India"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, zoomFactor))
+        try{
+            val mIntent = intent.extras!!
+
+            val BusKMLCoordinates = LatLngBounds.Builder()
+            val SensorSitesKMLCoordinates = LatLngBounds.Builder()
+            val ServiceKMLCoordinates = LatLngBounds.Builder()
+
+            val BusKMLLayer = KmlLayer(mMap, ByteArrayInputStream(mIntent.getString("BusKMLData")?.toByteArray()), this)
+            val SensorSitesKMLLayer = KmlLayer(mMap, ByteArrayInputStream(mIntent.getString("SensorSitesKMLData")?.toByteArray()), this)
+            val ServiceKMLLayer = KmlLayer(mMap, ByteArrayInputStream(mIntent.getString("ServiceKMLData")?.toByteArray()), this)
+
+            BusKMLLayer.addLayerToMap()
+            SensorSitesKMLLayer.addLayerToMap()
+            ServiceKMLLayer.addLayerToMap()
+
+            for (placemark in BusKMLLayer.placemarks) {
+                if(placemark.geometry.geometryType.equals("Point"))
+                    BusKMLCoordinates.include(placemark.geometry.geometryObject as LatLng)
+            }
+
+            for (placemark in SensorSitesKMLLayer.placemarks) {
+                if(placemark.geometry.geometryType.equals("Point"))
+                    SensorSitesKMLCoordinates.include(placemark.geometry.geometryObject as LatLng)
+            }
+
+            for (placemark in BusKMLLayer.placemarks) {
+                if(placemark.geometry.geometryType.equals("Point"))
+                    ServiceKMLCoordinates.include(placemark.geometry.geometryObject as LatLng)
+            }
+
+            val camera1Update = CameraUpdateFactory.newLatLngBounds(BusKMLCoordinates.build(), 20)
+            mMap.addMarker(MarkerOptions().icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)))
+            mMap.moveCamera(camera1Update)
+
+            val camera2Update = CameraUpdateFactory.newLatLngBounds(SensorSitesKMLCoordinates .build(), 20)
+            mMap.addMarker(MarkerOptions().icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)))
+            mMap.moveCamera(camera2Update)
+
+            val camera3Update = CameraUpdateFactory.newLatLngBounds(ServiceKMLCoordinates.build(), 20)
+            mMap.addMarker(MarkerOptions().icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)))
+            mMap.moveCamera(camera3Update)
+        }
+        catch(e: Exception){
+            e.printStackTrace()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -26,7 +26,6 @@ class SettingsActivity : AppCompatActivity() {
     lateinit var ip: String
     lateinit var port: String
     lateinit var machineCount: String
-
     lateinit var sharedPreferences: SharedPreferences
 
     @SuppressLint("MissingInflatedId")
@@ -44,7 +43,6 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.connection_status).setTextColor(Color.RED)
 
         val button = findViewById<Button>(R.id.connectButton)
-
 
         val SDK_INT = Build.VERSION.SDK_INT
         if (SDK_INT > 8) {
@@ -122,8 +120,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
     }
-
-    fun populateFields(){
+    private fun populateFields(){
         sharedPreferences = getSharedPreferences("LGConnectionData", MODE_PRIVATE)
 
         findViewById<EditText>(R.id.master_username).setText(sharedPreferences.getString("username", "lg").toString())
@@ -135,8 +132,7 @@ class SettingsActivity : AppCompatActivity() {
         Log.i("Shared Preferences", "Fields are populated")
 
     }
-
-    fun appendData(){
+    private fun appendData(){
 
         val editPreferences: SharedPreferences.Editor = sharedPreferences.edit()
 

@@ -13,10 +13,14 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.jcraft.jsch.ChannelExec
+import com.jcraft.jsch.JSch
+import com.jcraft.jsch.Session
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -34,12 +38,18 @@ import universal.appfactory.smartcity.Settings.TasksActivity
 import universal.appfactory.smartcity.adapters.PageAdapter
 import universal.appfactory.smartcity.data.*
 
+@Suppress("UNUSED_PARAMETER")
 class HomepageActivity : AppCompatActivity() {
 
     private lateinit var navigableIntent: Intent
     private var backpress: Long = 0
     private lateinit var viewPager: ViewPager
     private lateinit var tabLayout: TabLayout
+
+    private var busStopKML: ArrayList<LocationFeaturesModel>? = null
+    private var sensorSiteKML: ArrayList<LocationFeaturesModel>? = null
+    private var serviceKML: ArrayList<LocationFeaturesModel>? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,9 +98,6 @@ class HomepageActivity : AppCompatActivity() {
                                 call: Call<ServicesModel>,
                                 response: Response<ServicesModel>
                             ) {
-
-                                Log.i("Response", response.body().toString())
-
                                 val busStops: ServiceFeatureModel? = response.body()?.BusStops
                                 val sensorSites: ServiceFeatureModel? = response.body()?.SensorSites
                                 val services: ServiceFeatureModel? = response.body()?.Services
@@ -115,6 +122,7 @@ class HomepageActivity : AppCompatActivity() {
                                                 "Type Label: ${busStopsFeatures[i].properties.typeLabel}\n" +
                                                 "Feature type: ${busStopsFeatures[i].type}")
                                     }
+                                    busStopKML = busStopsFeatures
                                 }
 
                                 if (sensorSitesFeatures != null) {
@@ -131,6 +139,7 @@ class HomepageActivity : AppCompatActivity() {
                                                 "Type Label: ${sensorSitesFeatures[i].properties.typeLabel}\n" +
                                                 "Feature type: ${sensorSitesFeatures[i].type}")
                                     }
+                                    sensorSiteKML = sensorSitesFeatures
                                 }
 
                                 if (servicesFeatures != null) {
@@ -148,6 +157,7 @@ class HomepageActivity : AppCompatActivity() {
                                                 "Type Label: ${servicesFeatures[i].properties.typeLabel}\n" +
                                                 "Feature type: ${servicesFeatures[i].type}")
                                     }
+                                    serviceKML = servicesFeatures
                                 }
 
                                 Log.i("API status", "Success")
@@ -429,7 +439,179 @@ class HomepageActivity : AppCompatActivity() {
             else -> { Log.i("Smart Task", "No API response")}
         }
     }
+    fun visualize(view: View){
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setPositiveButton("Cancel") {_, _ ->}
+        val customLayout: View = layoutInflater.inflate(R.layout.visualization_alertbox, null)
+        builder.setView(customLayout)
 
+        builder.create().show()
+    }
+    fun visualizeInApp(it: View){
+        val BusKMLdata= buildBusStopKML()
+        val SensorSitesKMLData = buildSensorSiteKML()
+        val ServiceKMLData = buildServiceKML()
+
+        if(BusKMLdata != "null"){
+            val navigableIntent = Intent(this@HomepageActivity, MapsActivity::class.java)
+            navigableIntent.putExtra("BusKMLData", BusKMLdata)
+            navigableIntent.putExtra("SensorSitesKMLData", SensorSitesKMLData)
+            navigableIntent.putExtra("ServiceKMLData", ServiceKMLData)
+            startActivity(navigableIntent)
+        }
+        else
+            Toast.makeText(this, "Select a parameter", Toast.LENGTH_SHORT).show()
+    }
+    fun visualizeInLG(it: View){
+        val BusKMLData = buildBusStopKML()
+        val SensorSitesKMLData = buildSensorSiteKML()
+        val ServiceKMLData = buildServiceKML()
+
+        @OptIn(DelicateCoroutinesApi::class)
+        GlobalScope.launch(Dispatchers.IO) {
+
+            try{
+                val session = setSession()
+                session?.connect()
+
+                val channel = session?.openChannel("Exec")
+                val command = ""
+
+                (channel as ChannelExec).setCommand(command)
+
+                // Disconnection from LG rigs
+                channel.disconnect()
+                session.disconnect()
+
+                findViewById<ProgressBar>(R.id.progressbar).visibility = View.GONE
+            }
+            catch(e: Exception){
+                runOnUiThread {
+                    findViewById<ProgressBar>(R.id.progressbar).visibility = View.GONE
+                    Toast.makeText(this@HomepageActivity, "Error", Toast.LENGTH_SHORT).show()
+                }
+                e.printStackTrace()
+            }
+        }
+        findViewById<ProgressBar>(R.id.progressbar).visibility = View.VISIBLE
+    }
+
+    private fun buildBusStopKML(): String {
+        var KMLdata = "null"
+
+        if (busStopKML != null) {
+            var placemarkers: String = """"""
+
+            for (i in 0 until busStopKML!!.size) {
+                placemarkers += """
+                <Placemark>
+                  <name>Bus Stop: ${i + 1}, ${busStopKML!![i].properties.name}</name>
+                  <description>Distance: ${busStopKML!![i].properties.distance}, 
+                  Service Type: ${busStopKML!![i].properties.typeLabel}</description>
+                  <Point>
+                    <coordinates>${busStopKML!![i].geometry.coordinates[0]}, ${busStopKML!![i].geometry.coordinates[1]}</coordinates>
+                  </Point>
+                </Placemark>
+            """
+            }
+
+            KMLdata = """
+            <kml xmlns="http://www.opengis.net/kml/2.2">
+              <Document>
+                <name>My Placemark</name>
+                <description>Sample placemark</description>
+                $placemarkers
+              </Document>
+            </kml>
+        """
+        }
+
+        return KMLdata
+    }
+    private fun buildSensorSiteKML(): String {
+        var KMLdata = "null"
+
+        if (sensorSiteKML != null) {
+            var placemarkers: String = """"""
+
+            for (i in 0 until sensorSiteKML!!.size) {
+                placemarkers += """
+                <Placemark>
+                  <name>Sensor site: ${i + 1}, ${sensorSiteKML!![i].properties.name}</name>
+                  <description>Distance: ${sensorSiteKML!![i].properties.distance}, 
+                  Service Type: ${sensorSiteKML!![i].properties.typeLabel}</description>
+                  <Point>
+                    <coordinates>${sensorSiteKML!![i].geometry.coordinates[0]}, ${sensorSiteKML!![i].geometry.coordinates[1]}</coordinates>
+                  </Point>
+                </Placemark>
+            """
+            }
+
+            KMLdata = """
+            <kml xmlns="http://www.opengis.net/kml/2.2">
+              <Document>
+                <name>Sensor sites placemarks</name>
+                <description>Sensor sites placemarks that are used to display on a map</description>
+                $placemarkers
+              </Document>
+            </kml>
+        """
+        }
+
+        return KMLdata
+    }
+    private fun buildServiceKML(): String {
+        var KMLdata = "null"
+
+        if (serviceKML != null) {
+            var placemarkers: String = """"""
+
+            for (i in 0 until serviceKML!!.size) {
+                placemarkers += """
+                <Placemark>
+                  <name>Service: ${i + 1}, ${serviceKML!![i].properties.name}</name>
+                  <description>Distance: ${serviceKML!![i].properties.distance}, 
+                  Service Type: ${serviceKML!![i].properties.typeLabel}</description>
+                  <Point>
+                    <coordinates>${serviceKML!![i].geometry.coordinates[0]}, ${serviceKML!![i].geometry.coordinates[1]}</coordinates>
+                  </Point>
+                </Placemark>
+            """
+            }
+
+            KMLdata = """
+            <kml xmlns="http://www.opengis.net/kml/2.2">
+              <Document>
+                <name>Services placemarks</name>
+                <description>Service placemarks that are used to display on a map.</description>
+                $placemarkers
+              </Document>
+            </kml>
+        """
+        }
+
+        return KMLdata
+    }
+    private fun setSession(): Session? {
+
+        val sharedPreferences = getSharedPreferences("LGConnectionData", MODE_PRIVATE)
+        val port = sharedPreferences.getString("port", "22")
+
+        val jsch = JSch()
+        val session = port?.let {
+            jsch.getSession(sharedPreferences.getString("username", "lg").toString(),
+                sharedPreferences.getString("host", "192.168.201.3").toString(),
+                it.toInt())
+        }
+        session?.setPassword(sharedPreferences.getString("password", "lg").toString())
+        session?.timeout = 10000
+        session?.setConfig("StrictHostKeyChecking", "no")
+
+        return session
+    }
+
+
+    // Speech Recognition
     private val speechRecognitionLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
@@ -449,6 +631,8 @@ class HomepageActivity : AppCompatActivity() {
 
     }
 
+
+    // Common
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if(backpress + 2000 > System.currentTimeMillis())
